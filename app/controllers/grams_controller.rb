@@ -3,10 +3,10 @@ class GramsController < ApplicationController
   
   def destroy
     @gram = Gram.find_by_id(params[:id])
-    return render_not_found if @gram.blank?
+      return render_not_found if @gram.blank?
     if @gram.user != current_user
       return render_forbidden
-    end
+  end
     
     @gram.destroy
     redirect_to root_path
@@ -33,6 +33,7 @@ class GramsController < ApplicationController
   end
   
   def index
+    @gram = Gram.all
   end
   
   def show
@@ -62,7 +63,7 @@ class GramsController < ApplicationController
   private
   
   def gram_params
-    params.require(:gram).permit(:message)
+    params.require(:gram).permit(:message, :picture)
   end
   
   def render_not_found
@@ -71,5 +72,9 @@ class GramsController < ApplicationController
   
   def render_forbidden
     render plain: 'Forbidden :(', status: :forbidden
+  end
+  
+  def picture_params
+    params.require(:gram).permit(:picture)
   end
 end
